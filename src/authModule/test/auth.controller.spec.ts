@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { signupDto } from '../../../modules/authModule/dto/signup.dto';
+import { signupDto } from '../../authModule/dto/signup.dto';
 import { AuthController } from '../auth.controller';
 import { AuthService } from '../auth.service';
 import { signinDto } from '../dto/signin.dto';
-import { PrismaService } from '../../../modules/prismaModule/prisma.service';
+import { PrismaService } from '../../prismaModule/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 
 describe('AuthController', () => {

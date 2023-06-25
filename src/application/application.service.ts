@@ -1,5 +1,5 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { comparePassword, encryptPassword } from '../../common/utils/crypto';
+import { comparePassword, encryptPassword } from '../common/utils/crypto';
 import { PrismaService } from '../prismaModule/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 

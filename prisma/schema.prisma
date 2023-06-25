@@ -18,8 +18,10 @@ model Owner {
   last_name    String
   image        String?
   applications Application[]
-  createdAt    DateTime      @default(now()) @ignore
-  updatedAt    DateTime      @updatedAt @ignore
+  confirmed    Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  SessionLog   SessionLog[]
 }
 
 model Application {
@@ -30,17 +32,34 @@ model Application {
   owner           Owner             @relation(fields: [userId], references: [id])
   userId          Int
   ApplicationUser ApplicationUser[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  SessionLog      SessionLog[]
 }
 
 model ApplicationUser {
-  id            Int         @id @default(autoincrement())
+  id            Int          @id @default(autoincrement())
   email         String
   password      String
   first_name    String?
   last_name     String?
   image         String?
-  applications  Application @relation(fields: [applicationId], references: [id])
+  applications  Application  @relation(fields: [applicationId], references: [id])
   applicationId Int
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  confirmed     Boolean      @default(false)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  SessionLog    SessionLog[]
+}
+
+model SessionLog {
+  id            Int              @id @default(autoincrement())
+  application   Application?     @relation(fields: [applicationId], references: [id])
+  applicationId Int
+  user          ApplicationUser? @relation(fields: [userId], references: [id])
+  userId        Int
+  owner         Owner?           @relation(fields: [ownerId], references: [id])
+  ownerId       Int
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
 }
