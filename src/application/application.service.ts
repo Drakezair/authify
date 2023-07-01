@@ -1,57 +1,31 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { comparePassword, encryptPassword } from '../common/utils/crypto';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prismaModule/prisma.service';
-import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
-export class AuthService {
-  constructor(private prisma: PrismaService, private jwtService: JwtService) {}
+export class ApplicationsService {
+  constructor(private prisma: PrismaService) {}
 
-  async signUp(body) {
-    const encryptedPassword = await encryptPassword(body.password);
-    const alreadyExist = await this.prisma.owner.findUnique({
-      where: { email: body.email },
+  async createApplication(owner, body) {
+    const application = await this.prisma.application.create({
+      data: {
+        ...body,
+        owner: { connect: { id: owner.id } },
+      },
     });
 
-    if (alreadyExist) {
-      throw new HttpException('User already exist', HttpStatus.FORBIDDEN);
-    }
-
-    console.log(encryptedPassword);
-
-    const owner = await this.prisma.owner.create({
-      data: { ...body, password: encryptedPassword },
-    });
-
-    const payload = { ownerId: owner.id };
-    const token = await this.jwtService.signAsync(payload);
-
-    delete owner.password;
-
-    return { user: owner, token };
+    return application;
   }
 
-  async signIn(body) {
-    const owner = await this.prisma.owner.findUniqueOrThrow({
-      where: { email: body.email },
+  async getApplications(owner) {
+    const applications = await this.prisma.application.findMany({
+      where: { userId: owner.id },
+      include: {
+        owner: {
+          select: { id: true, email: true, first_name: true, last_name: true },
+        },
+      },
     });
 
-    if (!owner)
-      throw new HttpException('Invalid credential', HttpStatus.FORBIDDEN);
-
-    const isPasswordValid = await comparePassword(
-      body.password,
-      owner.password,
-    );
-
-    if (!isPasswordValid)
-      throw new HttpException('Invalid credential', HttpStatus.UNAUTHORIZED);
-
-    const payload = { ownerId: owner.id };
-    const token = await this.jwtService.signAsync(payload);
-
-    delete owner.password;
-
-    return { user: owner, token };
+    return applications;
   }
 }

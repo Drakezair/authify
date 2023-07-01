@@ -17,8 +17,6 @@ export class AuthService {
       throw new HttpException('User already exist', HttpStatus.FORBIDDEN);
     }
 
-    console.log(encryptedPassword);
-
     const owner = await this.prisma.owner.create({
       data: { ...body, password: encryptedPassword },
     });

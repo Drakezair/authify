@@ -1,12 +1,22 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/authModule/wt-auth.guard';
 import { GetOwner } from 'src/common/decorators/get-owner.decorator';
+import { ApplicationsService } from './application.service';
+import { createApplicationDto } from './dto/create_application.dto';
 
 @Controller('application')
-export class ApplicationController {
+export class ApplicationsController {
+  constructor(private readonly applicationsService: ApplicationsService) {}
+
   @Post('/')
   @UseGuards(JwtAuthGuard)
-  createApplication(@GetOwner() owner, @Body() body) {
-    return 'hola';
+  createApplication(@GetOwner() owner, @Body() body: createApplicationDto) {
+    return this.applicationsService.createApplication(owner, body);
+  }
+
+  @Get('/')
+  @UseGuards(JwtAuthGuard)
+  getApplications(@GetOwner() owner) {
+    return this.applicationsService.getApplications(owner);
   }
 }
