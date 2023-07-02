@@ -1,5 +1,5 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { comparePassword, encryptPassword } from '../../common/utils/crypto';
+import { comparePassword, encryptPassword } from '../common/utils/crypto';
 import { PrismaService } from '../prismaModule/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 
@@ -16,8 +16,6 @@ export class AuthService {
     if (alreadyExist) {
       throw new HttpException('User already exist', HttpStatus.FORBIDDEN);
     }
-
-    console.log(encryptedPassword);
 
     const owner = await this.prisma.owner.create({
       data: { ...body, password: encryptedPassword },

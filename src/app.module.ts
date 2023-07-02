@@ -1,11 +1,24 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './modules/authModule/auth.module';
+import { AuthModule } from './authModule/auth.module';
+import { ApplicationModule } from './application/application.module';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './authModule/jwt.strategy';
 
 @Module({
-  imports: [AuthModule],
+  imports: [
+    AuthModule,
+    ApplicationModule,
+    PassportModule,
+    JwtModule.register({
+      global: true,
+      secret: process.env.SECRET_KEY,
+      signOptions: { expiresIn: '1s' },
+    }),
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, JwtStrategy],
 })
 export class AppModule {}
