@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/authModule/wt-auth.guard';
-import { GetOwner } from 'src/common/decorators/get-owner.decorator';
+import { GetOwner } from '../common/decorators/get-owner.decorator';
 import { ApplicationsService } from './application.service';
 import { createApplicationDto } from './dto/create_application.dto';
+import { JwtAuthGuard } from '../authModule/wt-auth.guard';
 
 @Controller('application')
 export class ApplicationsController {

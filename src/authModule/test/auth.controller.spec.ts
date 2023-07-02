@@ -38,6 +38,9 @@ describe('AuthController', () => {
           first_name: 'test',
           last_name: 'test',
           image: 'test',
+          confirmed: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         token: 'test',
       };
@@ -67,6 +70,9 @@ describe('AuthController', () => {
           first_name: 'test',
           last_name: 'test',
           image: 'test',
+          confirmed: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         token: 'test',
       };

@@ -28,6 +28,7 @@ model Application {
   id              Int               @id @default(autoincrement())
   name            String
   description     String
+  api_key         String            @unique @default(uuid())
   image           String?
   owner           Owner             @relation(fields: [userId], references: [id])
   userId          Int
@@ -61,5 +62,4 @@ model SessionLog {
   owner         Owner?           @relation(fields: [ownerId], references: [id])
   ownerId       Int
   createdAt     DateTime         @default(now())
-  updatedAt     DateTime         @updatedAt
 }

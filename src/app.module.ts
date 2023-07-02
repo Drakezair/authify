@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './authModule/auth.module';
-import { ApplicationModule } from './application/application.module';
+import { ApplicationsModule } from './application/application.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './authModule/jwt.strategy';
@@ -10,7 +10,7 @@ import { JwtStrategy } from './authModule/jwt.strategy';
 @Module({
   imports: [
     AuthModule,
-    ApplicationModule,
+    ApplicationsModule,
     PassportModule,
     JwtModule.register({
       global: true,
